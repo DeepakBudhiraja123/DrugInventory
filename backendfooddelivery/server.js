@@ -8,9 +8,22 @@ import orderRouter from "./routes/orderRoute.js";
 import medicineRouter from "./routes/medicineRoute.js";
 import inventoryRouter from "./routes/inventoryRoute.js";
 import notificationsRouter from "./routes/notificationsRouter.js";
+import cron from 'node-cron'
+import fs from 'fs'
+import path from "path";
+import { Parser } from "json2csv";
+import orderModel from "./models/orderModel.js";
 // app config
+
 const app = express();
 const port = 4000
+
+// csv file
+
+cron.schedule('0 0 * * *', () => { // This will run every day at midnight
+    console.log('Generating CSV...');
+    generateCSV(); // Call your CSV generation function
+});
 
 // middleware
 app.use(express.json())

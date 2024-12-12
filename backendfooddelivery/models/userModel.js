@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema({
   inventoryData:{
     type: Object,
     default:{}
-  },
-  notifications:{
-    type: Object,
-    default: {}
   }
 }, {minimize: false});
 

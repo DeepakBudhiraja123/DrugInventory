@@ -1,13 +1,15 @@
-import userModel from "../models/userModel.js"
+import notificationsModel from "../models/notificationsModel.js";
 
 // Add items to user Cart 
 const addToNotifications = async(req, res)=>{
     try {
-        let userData = await userModel.findById(req.body.userId)
-        let notifications = await userData.notifications;
-        
-        notifications.unshift();
-        await userModel.findByIdAndUpdate(req.body.userId, {notifications});
+        const {userId, orderId} = req.body;
+        const newNotification = new notificationsModel({
+            userId : userId,
+            orderId: orderId
+        })
+        await newNotification.save();
+
         res.json({
             success: true,
             message: "Item Added to notification Successfully"
@@ -24,11 +26,10 @@ const addToNotifications = async(req, res)=>{
 
 const getNotifications = async (req, res)=>{
     try {
-        let userData = await userModel.findById(req.body.userId);
-        let notifications = await userData.notifications;
+        const notifications = await notificationsModel.find({userId: req.body.userId})
         res.json({
             success: true,
-            notifications
+            data: notifications
         })
     } catch (error) {
         console.log(error);
@@ -38,5 +39,19 @@ const getNotifications = async (req, res)=>{
         })
     }
 }
-
-export {addToNotifications, getNotifications};
+const updateStatus = async (req, res)=>{
+    try {
+        await notificationsModel.findByIdAndUpdate(req.body.id, {isAccepted: req.body.isAccepted});
+        res.json({  
+            success: true,
+            message:"Status updated successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        res.json({
+            success: false,
+            message: "Error"
+        })
+    }
+}
+export {addToNotifications, getNotifications, updateStatus};

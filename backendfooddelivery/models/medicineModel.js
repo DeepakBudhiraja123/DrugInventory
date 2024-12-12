@@ -23,6 +23,6 @@ const medicineSchema = new mongoose.Schema({
     }
 })
 
-const medicineModel = mongoose.models.food || mongoose.model("medicine", medicineSchema);
+const medicineModel = mongoose.models.medicine || mongoose.model("medicine", medicineSchema);
 
 export default medicineModel;

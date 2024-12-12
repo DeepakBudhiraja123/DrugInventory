@@ -67,8 +67,9 @@ const registerUser = async (req, res)=>{
             email: email,
             password: hashedpassword
         })
-        
         const user = await newUser.save();
+        
+        // await newInventory.save();
         const token = createToken(user._id);
         res.json({
             success: true,
@@ -83,5 +84,21 @@ const registerUser = async (req, res)=>{
         })
     }
 }
+const getOneUser = async (req, res)=>{
+    try {
+        const user = await userModel.find({});
 
-export {loginUser, registerUser};
+        res.json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        res.json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+export {loginUser, registerUser, getOneUser};
